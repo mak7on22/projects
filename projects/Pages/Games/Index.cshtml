@@ -1,0 +1,13 @@
+@page
+@model projects.Pages.Games.IndexModel
+@{
+    ViewData["Title"] = "Game Catalog";
+}
+
+<h1>Game Catalog</h1>
+<ul>
+@foreach (var game in Model.Games)
+{
+    <li>@game.Name (@game.Genre)</li>
+}
+</ul>
