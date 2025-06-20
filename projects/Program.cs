@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using projects.Models;
+
 namespace projects
 {
     public class Program
@@ -8,6 +12,12 @@ namespace projects
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<projects.Models.ApplicationDbContext>(options =>
+                options.UseNpgsql(connectionString));
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
 
@@ -22,6 +32,7 @@ namespace projects
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
