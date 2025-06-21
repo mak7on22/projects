@@ -21,6 +21,7 @@ namespace projects
 
             builder.Services.AddScoped<MatchService>();
             builder.Services.AddScoped<PremiumService>();
+            builder.Services.AddScoped<AchievementService>();
             builder.Services.AddTransient<EmailSendler>();
             builder.Services.AddTransient<UserService>();
             builder.Services.AddResponseCompression();

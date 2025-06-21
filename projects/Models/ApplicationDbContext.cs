@@ -16,6 +16,8 @@ namespace projects.Models
         public DbSet<Wallet> Wallets => Set<Wallet>();
         public DbSet<PremiumTransaction> PremiumTransactions => Set<PremiumTransaction>();
         public DbSet<GameWinStat> GameWinStats => Set<GameWinStat>();
+        public DbSet<Achievement> Achievements => Set<Achievement>();
+        public DbSet<UserAchievement> UserAchievements => Set<UserAchievement>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -66,6 +68,19 @@ namespace projects.Models
                 .HasOne(s => s.User)
                 .WithMany()
                 .HasForeignKey(s => s.UserId);
+
+            builder.Entity<UserAchievement>()
+                .HasKey(ua => ua.Id);
+
+            builder.Entity<UserAchievement>()
+                .HasOne(ua => ua.User)
+                .WithMany()
+                .HasForeignKey(ua => ua.UserId);
+
+            builder.Entity<UserAchievement>()
+                .HasOne(ua => ua.Achievement)
+                .WithMany(a => a.UserAchievements)
+                .HasForeignKey(ua => ua.AchievementId);
         }
     }
 }

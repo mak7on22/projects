@@ -1,0 +1,19 @@
+@page
+@model projects.Pages.Achievements.IndexModel
+@{
+    ViewData["Title"] = "Achievements";
+}
+<h1>Achievements</h1>
+<ul>
+@foreach (var ach in Model.AllAchievements)
+{
+    var earned = Model.UserAchievementIds.Contains(ach.Id);
+    <li>
+        <strong>@ach.Name</strong> - @ach.Description
+        @if (earned)
+        {
+            <span class="badge bg-success">earned</span>
+        }
+    </li>
+}
+</ul>
