@@ -6,11 +6,13 @@ namespace projects.Servises
     public class MatchService
     {
         private readonly ApplicationDbContext _context;
+        private readonly AchievementService _achievementService;
         private const decimal WinReward = 10m;
 
-        public MatchService(ApplicationDbContext context)
+        public MatchService(ApplicationDbContext context, AchievementService achievementService)
         {
             _context = context;
+            _achievementService = achievementService;
         }
 
         public async Task RecordMatchResultAsync(Guid matchId, Guid winnerId)
@@ -46,6 +48,8 @@ namespace projects.Servises
             }
 
             await _context.SaveChangesAsync();
+
+            await _achievementService.CheckAchievementsAsync(winnerId);
         }
     }
 }
