@@ -1,0 +1,36 @@
+@model projects.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<h2>Register</h2>
+<form asp-action="Register" method="post" class="mt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-floating mb-2">
+        <input asp-for="Email" class="form-control" />
+        <label asp-for="Email"></label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-2">
+        <input asp-for="Nickname" class="form-control" />
+        <label asp-for="Nickname"></label>
+        <span asp-validation-for="Nickname" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-2">
+        <input asp-for="Password" type="password" class="form-control" id="Password" />
+        <label asp-for="Password"></label>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-2">
+        <input asp-for="ConfirmPassword" type="password" class="form-control" id="ConfirmPassword" />
+        <label asp-for="ConfirmPassword"></label>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+<div class="mt-2">
+    <a asp-action="Login">Авторизация</a>
+</div>
+@section Scripts {
+    <partial name="~/Pages/Shared/_ValidationScriptsPartial.cshtml" />
+    <script src="~/js/passwordCheck.js"></script>
+}
