@@ -12,7 +12,7 @@
 Дополняем до 20:
 
 #	Фича	Суть / зачем нужна
-9	Ежедневные и недельные квесты	Доп. способ заработать монеты и удержать аудиторию.
+9       Ежедневные и недельные квесты   Доп. способ заработать монеты и удержать аудиторию. [bearbones] (Models/Quest.cs, Models/UserQuest.cs, Servises/QuestService.cs, Pages/Quests/Index.cshtml)
 10	Достижения (Achievements)       Значки за первые 10 побед, безошибочный раунд и т.д. [bearbones] (Models/Achievement.cs, Models/UserAchievement.cs, Servises/AchievementService.cs, Pages/Achievements/Index.cshtml)
 11	Глобальный и дружественный лидерборд    Топ-100 по победам, фильтр “друзья”. [bearbones] (Pages/Leaderboard/Index.cshtml)
 12	Магазин внутриигровых предметов	Скины досок/тем, подсказки, купить за обычные или донатные монеты.
@@ -89,3 +89,4 @@ Feature flags: включайте новые игры, магазин, PvP по�
 - Добавлены премиум транзакции и базовый магазин донатов – **bearbones** (Models/PremiumTransaction.cs, Pages/Shop/Index.cshtml, Servises/PremiumService.cs)
 - Добавлена система достижений и страница списка достижений – **bearbones** (Models/Achievement.cs, Models/UserAchievement.cs, Servises/AchievementService.cs, Pages/Achievements/Index.cshtml)
 - Реализован глобальный лидерборд побед – **bearbones** (Pages/Leaderboard/Index.cshtml)
+- Реализованы ежедневные квесты – **bearbones** (Models/Quest.cs, Models/UserQuest.cs, Servises/QuestService.cs, Pages/Quests/Index.cshtml)
