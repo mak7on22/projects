@@ -23,16 +23,22 @@ namespace projects.Pages.Leaderboard
 
         public async Task OnGetAsync()
         {
-            Rows = await _context.GameWinStats
-                .Include(s => s.User)
-                .GroupBy(s => new { s.UserId, s.User })
-                .Select(g => new Row
+            var query = _context.GameWinStats
+                .GroupBy(s => s.UserId)
+                .Select(g => new
                 {
-                    User = g.Key.User,
+                    UserId = g.Key,
                     Wins = g.Sum(x => x.Wins)
                 })
                 .OrderByDescending(r => r.Wins)
-                .Take(100)
+                .Take(100);
+
+            Rows = await query
+                .Join(_context.Users, q => q.UserId, u => u.Id, (q, u) => new Row
+                {
+                    User = u,
+                    Wins = q.Wins
+                })
                 .AsNoTracking()
                 .ToListAsync();
         }
