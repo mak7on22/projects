@@ -12,7 +12,7 @@ using projects.Models;
 namespace projects.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250621003146_Add_projects_OneBase")]
+    [Migration("20250621005152_Add_projects_OneBase")]
     partial class Add_projects_OneBase
     {
         /// <inheritdoc />
