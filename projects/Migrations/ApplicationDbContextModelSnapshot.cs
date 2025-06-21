@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projects.Models;
 
 #nullable disable
-
+//новая база данных для проекта
 namespace projects.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
-
+//новая база данных для проекта
 namespace projects.Migrations
 {
     /// <inheritdoc />
