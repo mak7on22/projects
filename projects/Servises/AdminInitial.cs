@@ -12,7 +12,7 @@ namespace projects.Servises
                 string adminEmail = "admin@mail.ru";
                 string adminPassword = "123!A123";
                 string adminLogin = "AdminaSosok22";
-                var roles = new[] { "Admin", "Manager", "Member" };
+                var roles = new[] { "Admin", "Manager", "User" };
 
                 foreach (var roleName in roles)
                 {

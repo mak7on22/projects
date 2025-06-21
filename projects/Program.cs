@@ -64,7 +64,7 @@ namespace projects
             using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-                var roles = new[] { "Admin", "Manager", "Member" };
+                var roles = new[] { "Admin", "Manager", "User" };
                 foreach (var role in roles)
                 {
                     if (!await roleManager.RoleExistsAsync(role))
