@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using projects.Models;
@@ -14,7 +15,7 @@ namespace projects.Pages.Profile
 
         public User? UserInfo { get; set; }
         public int WinsCount { get; set; }
-        [BindProperty]
+        [Microsoft.AspNetCore.Mvc.BindProperty]
         public ProfileInput Input { get; set; } = new();
 
         public class ProfileInput
