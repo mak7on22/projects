@@ -1,0 +1,24 @@
+@page
+@using Microsoft.AspNetCore.Identity
+@using projects.Models
+@inject UserManager<User> UserManager
+@model projects.Pages.Profile.IndexModel
+@{
+    ViewData["Title"] = "Profile";
+}
+<h1>Profile</h1>
+@if (Model.UserInfo != null)
+{
+    <div>
+        <img src="@Model.UserInfo.AvatarUrl" alt="Avatar" width="128" height="128" />
+        <p>Display Name: @Model.UserInfo.DisplayName</p>
+        <p>Email: @Model.UserInfo.Email</p>
+        <p>Balance: @Model.UserInfo.Wallet?.Balance</p>
+        <p>Premium Balance: @Model.UserInfo.Wallet?.PremiumBalance</p>
+        <p>Total Wins: @Model.WinsCount</p>
+    </div>
+}
+else
+{
+    <p>Please sign in to view your profile.</p>
+}
