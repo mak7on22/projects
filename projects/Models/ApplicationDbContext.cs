@@ -14,6 +14,7 @@ namespace projects.Models
         public DbSet<Game> Games => Set<Game>();
         public DbSet<Match> Matches => Set<Match>();
         public DbSet<Wallet> Wallets => Set<Wallet>();
+        public DbSet<PremiumTransaction> PremiumTransactions => Set<PremiumTransaction>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,6 +42,15 @@ namespace projects.Models
                 .WithMany()
                 .HasForeignKey(m => m.WinnerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<PremiumTransaction>()
+                .HasKey(t => t.Id);
+
+            builder.Entity<PremiumTransaction>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
