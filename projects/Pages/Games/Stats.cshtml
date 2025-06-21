@@ -1,0 +1,25 @@
+@page "{id?}"
+@model projects.Pages.Games.StatsModel
+@{
+    ViewData["Title"] = "Game Stats";
+}
+<h1>Game Stats</h1>
+@if (Model.Game == null)
+{
+    <p>Game not found.</p>
+}
+else
+{
+    <h2>@Model.Game.Name</h2>
+    <table class="table">
+        <thead>
+            <tr><th>User</th><th>Wins</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var row in Model.Stats)
+        {
+            <tr><td>@row.User.DisplayName ?? row.User.UserName</td><td>@row.Wins</td></tr>
+        }
+        </tbody>
+    </table>
+}

@@ -28,6 +28,23 @@ namespace projects.Servises
                 wallet.Balance += WinReward;
             }
 
+            var stat = await _context.GameWinStats.FirstOrDefaultAsync(s => s.GameId == match.GameId && s.UserId == winnerId);
+            if (stat == null)
+            {
+                stat = new GameWinStat
+                {
+                    Id = Guid.NewGuid(),
+                    GameId = match.GameId,
+                    UserId = winnerId,
+                    Wins = 1
+                };
+                _context.GameWinStats.Add(stat);
+            }
+            else
+            {
+                stat.Wins += 1;
+            }
+
             await _context.SaveChangesAsync();
         }
     }

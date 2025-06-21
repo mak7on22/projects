@@ -8,6 +8,8 @@
 <ul>
 @foreach (var game in Model.Games)
 {
-    <li>@game.Name (@game.Genre)</li>
+    <li>
+        <a asp-page="Stats" asp-route-id="@game.Id">@game.Name</a> (@game.Genre)
+    </li>
 }
 </ul>
