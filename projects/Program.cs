@@ -20,6 +20,7 @@ namespace projects
                 options.UseNpgsql(connectionString));
 
             builder.Services.AddScoped<MatchService>();
+            builder.Services.AddScoped<PremiumService>();
             builder.Services.AddTransient<EmailSendler>();
             builder.Services.AddTransient<UserService>();
             builder.Services.AddResponseCompression();
