@@ -171,7 +171,7 @@ namespace projects.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
                 });
 
             modelBuilder.Entity("projects.Models.Match", b =>
@@ -208,7 +208,7 @@ namespace projects.Migrations
 
                     b.HasIndex("WinnerId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("projects.Models.User", b =>
@@ -311,7 +311,7 @@ namespace projects.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Wallets");
+                    b.ToTable("Wallets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
