@@ -16,6 +16,8 @@ namespace projects
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<projects.Models.ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
+
+            builder.Services.AddScoped<projects.Servises.MatchService>();
             IdentityBuilder identityBuilder = builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
