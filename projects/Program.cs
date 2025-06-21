@@ -12,12 +12,14 @@ namespace projects
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddControllersWithViews();
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<projects.Models.ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
             builder.Services.AddScoped<projects.Servises.MatchService>();
+            builder.Services.AddTransient<projects.Servises.EmailSendler>();
             IdentityBuilder identityBuilder = builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
@@ -38,6 +40,9 @@ namespace projects
             app.UseAuthorization();
 
             app.MapStaticAssets();
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages()
                .WithStaticAssets();
 
