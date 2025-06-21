@@ -207,6 +207,28 @@ namespace projects.Migrations
                     b.ToTable("Matches");
                 });
 
+            modelBuilder.Entity("projects.Models.PremiumTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PremiumTransactions");
+                });
+
             modelBuilder.Entity("projects.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -310,28 +332,6 @@ namespace projects.Migrations
                     b.ToTable("Wallets");
                 });
 
-            modelBuilder.Entity("projects.Models.PremiumTransaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PremiumTransactions");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -415,6 +415,15 @@ namespace projects.Migrations
                     b.Navigation("Player2");
 
                     b.Navigation("Winner");
+                });
+
+            modelBuilder.Entity("projects.Models.PremiumTransaction", b =>
+                {
+                    b.HasOne("projects.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("projects.Models.Wallet", b =>
