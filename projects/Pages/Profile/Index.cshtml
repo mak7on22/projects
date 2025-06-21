@@ -11,8 +11,29 @@
 {
     <div>
         <img src="@Model.UserInfo.AvatarUrl" alt="Avatar" width="128" height="128" />
-        <p>Display Name: @Model.UserInfo.DisplayName</p>
-        <p>Email: @Model.UserInfo.Email</p>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Display Name</label>
+                <input class="form-control" asp-for="Input.DisplayName" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Avatar URL</label>
+                <input class="form-control" asp-for="Input.AvatarUrl" />
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <p class="mt-3">Email: @Model.UserInfo.Email</p>
+        <p>
+            @if (Model.UserInfo.EmailConfirmed)
+            {
+                <span class="text-success">Email подтверждён</span>
+            }
+            else
+            {
+                <span class="text-danger">Email не подтверждён</span>
+                <button type="submit" formmethod="post" formaction="?handler=ConfirmEmail" class="btn btn-success ms-2">Подтвердить Email?</button>
+            }
+        </p>
         <p>Balance: @Model.UserInfo.Wallet?.Balance</p>
         <p>Premium Balance: @Model.UserInfo.Wallet?.PremiumBalance</p>
         <p>Total Wins: @Model.WinsCount</p>

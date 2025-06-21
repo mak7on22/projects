@@ -41,11 +41,14 @@ namespace projects.Controllers
                 Email = model.Email,
                 UserName = model.Nickname,
                 Login = model.Nickname,
-                IsConfirmed = true
+                DisplayName = model.Nickname,
+                IsConfirmed = true,
+                RoleName = "User"
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "User");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home", new { area = "" });
             }

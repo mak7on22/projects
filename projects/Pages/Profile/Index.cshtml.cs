@@ -14,6 +14,14 @@ namespace projects.Pages.Profile
 
         public User? UserInfo { get; set; }
         public int WinsCount { get; set; }
+        [BindProperty]
+        public ProfileInput Input { get; set; } = new();
+
+        public class ProfileInput
+        {
+            public string? DisplayName { get; set; }
+            public string? AvatarUrl { get; set; }
+        }
 
         public IndexModel(ApplicationDbContext context, UserManager<User> userManager)
         {
@@ -36,7 +44,33 @@ namespace projects.Pages.Profile
             if (UserInfo != null)
             {
                 WinsCount = await _context.Matches.CountAsync(m => m.WinnerId == guid);
+                Input.DisplayName = UserInfo.DisplayName;
+                Input.AvatarUrl = UserInfo.AvatarUrl;
             }
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToPage();
+
+            user.DisplayName = Input.DisplayName;
+            user.AvatarUrl = Input.AvatarUrl;
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostConfirmEmailAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null && !user.EmailConfirmed)
+            {
+                user.EmailConfirmed = true;
+                await _userManager.UpdateAsync(user);
+            }
+            return RedirectToPage();
         }
     }
 }
