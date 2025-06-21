@@ -23,6 +23,7 @@ namespace projects
             builder.Services.AddScoped<PremiumService>();
             builder.Services.AddScoped<AchievementService>();
             builder.Services.AddScoped<QuestService>();
+            builder.Services.AddScoped<ItemStoreService>();
             builder.Services.AddTransient<EmailSendler>();
             builder.Services.AddTransient<UserService>();
             builder.Services.AddHttpContextAccessor();

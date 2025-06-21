@@ -1,0 +1,38 @@
+@page
+@model projects.Pages.ItemStore.IndexModel
+@{
+    ViewData["Title"] = "Item Store";
+}
+
+<h1>Item Store</h1>
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Items)
+{
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Price @(item.IsPremium ? "Premium" : "Coins")</td>
+            <td>
+                <form method="post">
+                    <input type="hidden" name="itemId" value="@item.Id" />
+                    <button type="submit" class="btn btn-primary">Buy</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
