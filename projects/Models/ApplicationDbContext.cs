@@ -15,6 +15,7 @@ namespace projects.Models
         public DbSet<Match> Matches => Set<Match>();
         public DbSet<Wallet> Wallets => Set<Wallet>();
         public DbSet<PremiumTransaction> PremiumTransactions => Set<PremiumTransaction>();
+        public DbSet<GameWinStat> GameWinStats => Set<GameWinStat>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,6 +52,20 @@ namespace projects.Models
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<GameWinStat>()
+                .HasIndex(s => new { s.GameId, s.UserId })
+                .IsUnique();
+
+            builder.Entity<GameWinStat>()
+                .HasOne(s => s.Game)
+                .WithMany()
+                .HasForeignKey(s => s.GameId);
+
+            builder.Entity<GameWinStat>()
+                .HasOne(s => s.User)
+                .WithMany()
+                .HasForeignKey(s => s.UserId);
         }
     }
 }
