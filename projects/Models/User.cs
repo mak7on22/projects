@@ -10,6 +10,9 @@ namespace projects.Models
     {
         public string? DisplayName { get; set; }
         public string? AvatarUrl { get; set; }
+        public string? Login { get; set; }
+        public string? RoleName { get; set; }
+        public bool IsConfirmed { get; set; } = false;
         public Wallet Wallet { get; set; } = new();
         public ICollection<Match> Matches { get; set; } = new List<Match>();
     }
