@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using projects.Models;
+using projects.Servises;
 
 namespace projects
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,22 @@ namespace projects
             builder.Services.AddDbContext<projects.Models.ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-            builder.Services.AddScoped<projects.Servises.MatchService>();
-            builder.Services.AddTransient<projects.Servises.EmailSendler>();
-            IdentityBuilder identityBuilder = builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddScoped<MatchService>();
+            builder.Services.AddTransient<EmailSendler>();
+            builder.Services.AddTransient<UserService>();
+            builder.Services.AddResponseCompression();
+
+            builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             var app = builder.Build();
 
@@ -32,6 +46,7 @@ namespace projects
                 app.UseHsts();
             }
 
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -45,6 +60,19 @@ namespace projects
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages()
                .WithStaticAssets();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+                var roles = new[] { "Admin", "Manager", "Member" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                        await roleManager.CreateAsync(new IdentityRole<Guid>(role));
+                }
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                await AdminInitial.SeedAdminUser(roleManager, userManager);
+            }
 
             app.Run();
         }

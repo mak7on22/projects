@@ -5,7 +5,7 @@ namespace projects.Servises
 {
     public class AdminInitial
     {
-        public static async Task SeedAdminUser(RoleManager<IdentityRole<int>> roleManager, UserManager<User> userManager)
+        public static async Task SeedAdminUser(RoleManager<IdentityRole<Guid>> roleManager, UserManager<User> userManager)
         {
             try
             {
@@ -17,7 +17,7 @@ namespace projects.Servises
                 foreach (var roleName in roles)
                 {
                     if (await roleManager.FindByNameAsync(roleName) == null)
-                        await roleManager.CreateAsync(new IdentityRole<int>(roleName));
+                        await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
                 }
 
                 if (await userManager.FindByEmailAsync(adminEmail) == null)
