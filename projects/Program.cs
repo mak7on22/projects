@@ -22,8 +22,10 @@ namespace projects
             builder.Services.AddScoped<MatchService>();
             builder.Services.AddScoped<PremiumService>();
             builder.Services.AddScoped<AchievementService>();
+            builder.Services.AddScoped<QuestService>();
             builder.Services.AddTransient<EmailSendler>();
             builder.Services.AddTransient<UserService>();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddResponseCompression();
 
             builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>

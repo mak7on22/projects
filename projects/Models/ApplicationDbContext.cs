@@ -18,6 +18,8 @@ namespace projects.Models
         public DbSet<GameWinStat> GameWinStats => Set<GameWinStat>();
         public DbSet<Achievement> Achievements => Set<Achievement>();
         public DbSet<UserAchievement> UserAchievements => Set<UserAchievement>();
+        public DbSet<Quest> Quests => Set<Quest>();
+        public DbSet<UserQuest> UserQuests => Set<UserQuest>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -81,6 +83,19 @@ namespace projects.Models
                 .HasOne(ua => ua.Achievement)
                 .WithMany(a => a.UserAchievements)
                 .HasForeignKey(ua => ua.AchievementId);
+
+            builder.Entity<UserQuest>()
+                .HasKey(uq => uq.Id);
+
+            builder.Entity<UserQuest>()
+                .HasOne(uq => uq.User)
+                .WithMany()
+                .HasForeignKey(uq => uq.UserId);
+
+            builder.Entity<UserQuest>()
+                .HasOne(uq => uq.Quest)
+                .WithMany(q => q.UserQuests)
+                .HasForeignKey(uq => uq.QuestId);
         }
     }
 }

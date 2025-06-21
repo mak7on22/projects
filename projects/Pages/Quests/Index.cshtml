@@ -1,0 +1,45 @@
+@page
+@model projects.Pages.Quests.IndexModel
+@{
+    ViewData["Title"] = "Quests";
+}
+<h1>Quests</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Reward</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var quest in Model.Quests)
+{
+    var completed = Model.CompletedQuestIds.Contains(quest.Id);
+        <tr>
+            <td>@quest.Name</td>
+            <td>@quest.RewardCoins coins</td>
+            <td>
+                @if (completed)
+                {
+                    <span class="badge bg-success">Completed</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Open</span>
+                }
+            </td>
+            <td>
+                @if (!completed)
+                {
+                    <form method="post">
+                        <input type="hidden" name="questId" value="@quest.Id" />
+                        <button type="submit" class="btn btn-primary">Claim</button>
+                    </form>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
