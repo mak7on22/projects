@@ -22,6 +22,7 @@ namespace projects.Models
         public DbSet<UserQuest> UserQuests => Set<UserQuest>();
         public DbSet<Item> Items => Set<Item>();
         public DbSet<UserItem> UserItems => Set<UserItem>();
+        public DbSet<ExchangeTransaction> ExchangeTransactions => Set<ExchangeTransaction>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -114,6 +115,15 @@ namespace projects.Models
                 .HasOne(ui => ui.Item)
                 .WithMany(i => i.UserItems)
                 .HasForeignKey(ui => ui.ItemId);
+
+            builder.Entity<ExchangeTransaction>()
+                .HasKey(e => e.Id);
+
+            builder.Entity<ExchangeTransaction>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
