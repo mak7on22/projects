@@ -12,7 +12,7 @@ using projects.Models;
 namespace projects.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250621024630_Base0.0.0.1")]
+    [Migration("20250621025131_Base0.0.0.1")]
     partial class Base0001
     {
         /// <inheritdoc />
@@ -174,6 +174,31 @@ namespace projects.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Achievements");
+                });
+
+            modelBuilder.Entity("projects.Models.ExchangeTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CoinsSpent")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("PremiumReceived")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ExchangeTransactions");
                 });
 
             modelBuilder.Entity("projects.Models.Game", b =>
@@ -544,6 +569,15 @@ namespace projects.Migrations
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("projects.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("projects.Models.ExchangeTransaction", b =>
                 {
                     b.HasOne("projects.Models.User", null)
                         .WithMany()

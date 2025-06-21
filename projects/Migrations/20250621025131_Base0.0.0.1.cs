@@ -219,6 +219,27 @@ namespace projects.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExchangeTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CoinsSpent = table.Column<decimal>(type: "numeric", nullable: false),
+                    PremiumReceived = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExchangeTransactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExchangeTransactions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PremiumTransactions",
                 columns: table => new
                 {
@@ -442,6 +463,11 @@ namespace projects.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExchangeTransactions_UserId",
+                table: "ExchangeTransactions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GameWinStats_GameId_UserId",
                 table: "GameWinStats",
                 columns: new[] { "GameId", "UserId" },
@@ -531,6 +557,9 @@ namespace projects.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ExchangeTransactions");
 
             migrationBuilder.DropTable(
                 name: "GameWinStats");

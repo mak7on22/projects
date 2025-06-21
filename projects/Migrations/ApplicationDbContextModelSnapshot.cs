@@ -173,6 +173,31 @@ namespace projects.Migrations
                     b.ToTable("Achievements");
                 });
 
+            modelBuilder.Entity("projects.Models.ExchangeTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CoinsSpent")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("PremiumReceived")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ExchangeTransactions");
+                });
+
             modelBuilder.Entity("projects.Models.Game", b =>
                 {
                     b.Property<Guid>("Id")
@@ -541,6 +566,15 @@ namespace projects.Migrations
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("projects.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("projects.Models.ExchangeTransaction", b =>
                 {
                     b.HasOne("projects.Models.User", null)
                         .WithMany()
