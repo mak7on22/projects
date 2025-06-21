@@ -16,7 +16,7 @@
 10	Достижения (Achievements)       Значки за первые 10 побед, безошибочный раунд и т.д. [bearbones] (Models/Achievement.cs, Models/UserAchievement.cs, Servises/AchievementService.cs, Pages/Achievements/Index.cshtml)
 11	Глобальный и дружественный лидерборд    Топ-100 по победам, фильтр “друзья”. [bearbones] (Pages/Leaderboard/Index.cshtml)
 12	Магазин внутриигровых предметов	Скины досок/тем, подсказки, купить за обычные или донатные монеты. [bearbones] (Models/Item.cs, Models/UserItem.cs, Servises/ItemStoreService.cs, Pages/ItemStore/Index.cshtml)
-13	Обмен внутриигровых → донатных монет (ограниченный)	Лояльность free-to-play игрокам, баланс экономики.
+13      Обмен внутриигровых → донатных монет (ограниченный)     Лояльность free-to-play игрокам, баланс экономики. [bearbones] (Models/ExchangeTransaction.cs, Servises/CurrencyExchangeService.cs, Pages/Exchange/Index.cshtml)
 14	Матч-мейкинг PvP (опционально)	Подбор соперника по ELO, режим “битва умов”.
 15	Реальный-тайм чат и эмодзи в игре	SignalR; коммуникация повышает вовлечённость.
 16	Админ-панель	Управление играми, банами, предметами магазина, акциями.
@@ -91,3 +91,4 @@ Feature flags: включайте новые игры, магазин, PvP по�
 - Реализован глобальный лидерборд побед – **bearbones** (Pages/Leaderboard/Index.cshtml)
 - Реализованы ежедневные квесты – **bearbones** (Models/Quest.cs, Models/UserQuest.cs, Servises/QuestService.cs, Pages/Quests/Index.cshtml)
 - Добавлен магазин внутриигровых предметов – **bearbones** (Models/Item.cs, Models/UserItem.cs, Servises/ItemStoreService.cs, Pages/ItemStore/Index.cshtml)
+- Реализован обмен обычных монет на премиум – **bearbones** (Models/ExchangeTransaction.cs, Servises/CurrencyExchangeService.cs, Pages/Exchange/Index.cshtml)

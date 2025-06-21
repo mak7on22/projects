@@ -1,0 +1,19 @@
+@page
+@model projects.Pages.Exchange.IndexModel
+@{
+    ViewData["Title"] = "Exchange";
+}
+
+<h2>Exchange Coins to Premium</h2>
+
+@if(Model.Message != null){
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label>Coins to exchange (must be multiple of 100)</label>
+        <input asp-for="Coins" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Exchange</button>
+</form>

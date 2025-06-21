@@ -24,6 +24,7 @@ namespace projects
             builder.Services.AddScoped<AchievementService>();
             builder.Services.AddScoped<QuestService>();
             builder.Services.AddScoped<ItemStoreService>();
+            builder.Services.AddScoped<CurrencyExchangeService>();
             builder.Services.AddTransient<EmailSendler>();
             builder.Services.AddTransient<UserService>();
             builder.Services.AddHttpContextAccessor();
