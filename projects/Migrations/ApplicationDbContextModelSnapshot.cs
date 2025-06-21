@@ -216,6 +216,27 @@ namespace projects.Migrations
                     b.ToTable("GameWinStats");
                 });
 
+            modelBuilder.Entity("projects.Models.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsPremium")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Items");
+                });
+
             modelBuilder.Entity("projects.Models.Match", b =>
                 {
                     b.Property<Guid>("Id")
@@ -273,6 +294,30 @@ namespace projects.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PremiumTransactions");
+                });
+
+            modelBuilder.Entity("projects.Models.Quest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("RewardCoins")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Quests");
                 });
 
             modelBuilder.Entity("projects.Models.User", b =>
@@ -377,6 +422,57 @@ namespace projects.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserAchievements");
+                });
+
+            modelBuilder.Entity("projects.Models.UserItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("PurchasedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserItems");
+                });
+
+            modelBuilder.Entity("projects.Models.UserQuest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("QuestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserQuests");
                 });
 
             modelBuilder.Entity("projects.Models.Wallet", b =>
@@ -534,6 +630,44 @@ namespace projects.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("projects.Models.UserItem", b =>
+                {
+                    b.HasOne("projects.Models.Item", "Item")
+                        .WithMany("UserItems")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("projects.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("projects.Models.UserQuest", b =>
+                {
+                    b.HasOne("projects.Models.Quest", "Quest")
+                        .WithMany("UserQuests")
+                        .HasForeignKey("QuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("projects.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quest");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("projects.Models.Wallet", b =>
                 {
                     b.HasOne("projects.Models.User", "User")
@@ -553,6 +687,16 @@ namespace projects.Migrations
             modelBuilder.Entity("projects.Models.Game", b =>
                 {
                     b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("projects.Models.Item", b =>
+                {
+                    b.Navigation("UserItems");
+                });
+
+            modelBuilder.Entity("projects.Models.Quest", b =>
+                {
+                    b.Navigation("UserQuests");
                 });
 
             modelBuilder.Entity("projects.Models.User", b =>

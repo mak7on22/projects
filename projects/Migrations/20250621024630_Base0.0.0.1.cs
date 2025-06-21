@@ -7,11 +7,25 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace projects.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_projects_OneBase : Migration
+    public partial class Base0001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Achievements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    RequiredWins = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Achievements", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -70,6 +84,35 @@ namespace projects.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    IsPremium = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Quests",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    RewardCoins = table.Column<int>(type: "integer", nullable: false),
+                    Frequency = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Quests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -115,8 +158,8 @@ namespace projects.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -160,8 +203,8 @@ namespace projects.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -169,6 +212,52 @@ namespace projects.Migrations
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PremiumTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PremiumTransactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PremiumTransactions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAchievements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AchievementId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AchievedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAchievements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAchievements_Achievements_AchievementId",
+                        column: x => x.AchievementId,
+                        principalTable: "Achievements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserAchievements_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -191,6 +280,32 @@ namespace projects.Migrations
                         name: "FK_Wallets_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GameWinStats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GameId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Wins = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameWinStats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GameWinStats_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GameWinStats_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -236,6 +351,59 @@ namespace projects.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PurchasedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserItems_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserQuests",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    QuestId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserQuests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserQuests_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserQuests_Quests_QuestId",
+                        column: x => x.QuestId,
+                        principalTable: "Quests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -274,6 +442,17 @@ namespace projects.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_GameWinStats_GameId_UserId",
+                table: "GameWinStats",
+                columns: new[] { "GameId", "UserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameWinStats_UserId",
+                table: "GameWinStats",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Matches_GameId",
                 table: "Matches",
                 column: "GameId");
@@ -292,6 +471,41 @@ namespace projects.Migrations
                 name: "IX_Matches_WinnerId",
                 table: "Matches",
                 column: "WinnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PremiumTransactions_UserId",
+                table: "PremiumTransactions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAchievements_AchievementId",
+                table: "UserAchievements",
+                column: "AchievementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAchievements_UserId",
+                table: "UserAchievements",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserItems_ItemId",
+                table: "UserItems",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserItems_UserId",
+                table: "UserItems",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserQuests_QuestId",
+                table: "UserQuests",
+                column: "QuestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserQuests_UserId",
+                table: "UserQuests",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Wallets_UserId",
@@ -319,7 +533,22 @@ namespace projects.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "GameWinStats");
+
+            migrationBuilder.DropTable(
                 name: "Matches");
+
+            migrationBuilder.DropTable(
+                name: "PremiumTransactions");
+
+            migrationBuilder.DropTable(
+                name: "UserAchievements");
+
+            migrationBuilder.DropTable(
+                name: "UserItems");
+
+            migrationBuilder.DropTable(
+                name: "UserQuests");
 
             migrationBuilder.DropTable(
                 name: "Wallets");
@@ -329,6 +558,15 @@ namespace projects.Migrations
 
             migrationBuilder.DropTable(
                 name: "Games");
+
+            migrationBuilder.DropTable(
+                name: "Achievements");
+
+            migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Quests");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
